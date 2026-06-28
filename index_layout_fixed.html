@@ -336,53 +336,40 @@
   /* Preview state */
   .preview-wrap{
     display:none;
-    padding:28px;
+    padding:24px;
   }
   .preview-wrap.active{display:block;}
 
-  .compare-toggle{
+  .preview-container{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:14px;
+    align-items:start;
+  }
+  .preview-card{
     display:flex;
-    justify-content:center;
-    gap:6px;
-    margin-bottom:16px;
+    flex-direction:column;
+    gap:8px;
   }
-  .cmp-btn{
-    font-family:'JetBrains Mono',monospace;
-    font-size:0.78rem;
-    font-weight:700;
-    letter-spacing:0.03em;
-    text-transform:uppercase;
-    padding:7px 18px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:var(--cream);
-    color:var(--muted);
-    cursor:pointer;
-    transition:all .15s ease;
+  .preview-card h4{
+    margin:0;
+    text-align:center;
+    font-size:0.95rem;
+    color:var(--navy);
   }
-  .cmp-btn.active{
-    background:var(--navy);
-    color:#fff;
-    border-color:var(--navy);
-  }
-  .cmp-btn:hover:not(.active){
-    border-color:var(--teal);
-    color:var(--teal);
-  }
-
   .preview-img-frame{
-    width:200px;
-    aspect-ratio:600/800;
-    margin:0 auto 20px;
+    width:100%;
+    aspect-ratio:3 / 4;
+    margin:0;
     border:1px solid var(--line);
-    border-radius:8px;
+    border-radius:10px;
     background:#fff repeating-conic-gradient(#f1ede2 0% 25%, transparent 0% 50%) 50% / 14px 14px;
     display:flex; align-items:center; justify-content:center;
     overflow:hidden;
     position:relative;
   }
   .preview-img-frame img{
-    width:100%; height:100%; object-fit:contain; display:block;
+    width:100%; height:100%; object-fit:contain; object-position:center; display:block;
   }
   .change-photo{
     display:block;
@@ -393,7 +380,7 @@
     cursor:pointer;
     text-decoration:underline;
     background:none; border:none;
-    margin:0 auto;
+    margin:12px auto 0;
   }
 
   .processing-row{
@@ -417,9 +404,10 @@
     padding:0;
     display:flex;
     flex-direction:column;
+    min-height:0;
   }
   .receipt-head{
-    padding:20px 24px 14px;
+    padding:14px 18px 10px;
     border-bottom:1px dashed var(--line);
   }
   .receipt-head .label{
@@ -436,14 +424,15 @@
     font-size:1.15rem;
   }
   .receipt-rows{
-    padding:14px 24px;
+    padding:8px 18px 4px;
     flex:1;
   }
   .r-row{
     display:flex; justify-content:space-between; align-items:baseline;
-    padding:9px 0;
+    padding:5px 0;
     border-bottom:1px solid #efebe0;
-    font-size:0.92rem;
+    font-size:0.86rem;
+    gap:10px;
   }
   .r-row:last-child{border-bottom:none;}
   .r-row .k{color:var(--muted);}
@@ -463,8 +452,9 @@
   .status-chip svg{width:14px;height:14px;}
 
   .receipt-foot{
-    padding:18px 24px 22px;
+    padding:10px 18px 14px;
     border-top:1px dashed var(--line);
+    margin-top:auto;
   }
   .download-label{
     font-family:'JetBrains Mono',monospace;
@@ -476,7 +466,7 @@
   }
   .download-row{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
     gap:8px;
   }
   .dl-btn{
@@ -501,7 +491,7 @@
   .dl-btn svg{width:18px;height:18px;}
 
   .empty-receipt{
-    padding:50px 24px;
+    padding:28px 18px;
     text-align:center;
     color:var(--muted);
     font-size:0.9rem;
@@ -549,19 +539,37 @@
 </style>
 
 <style>
-.preview-container{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
-.preview-container > *{flex:1;min-width:280px}
-</style>
-
-
-<style>
-body{max-width:1200px;margin:auto;padding:10px}
-.preview-container,.preview-wrapper,.comparison-container{
-display:flex !important;gap:12px;align-items:flex-start;justify-content:center;flex-wrap:nowrap !important}
-.preview-container img,.preview-wrapper img,.comparison-container img{
-max-width:48% !important;width:48% !important}
-#shareLikeBar{margin:8px 0 !important}
-h1,h2,h3,p{margin-top:6px;margin-bottom:6px}
+.preview-container{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:14px;
+  align-items:start;
+}
+.preview-card{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.preview-card h4{
+  margin:0;
+  text-align:center;
+  font-size:0.95rem;
+  color:var(--navy);
+}
+.preview-img-frame{
+  width:100%;
+  aspect-ratio:3 / 4;
+  margin:0;
+  border-radius:10px;
+}
+.preview-img-frame img{
+  width:100%; height:100%; object-fit:contain; object-position:center;
+}
+@media (max-width:700px){
+  .preview-container{grid-template-columns:1fr;}
+  .download-row{grid-template-columns:1fr;}
+  .receipt-foot{padding:10px 16px 14px;}
+}
 </style>
 
 </head>
@@ -630,12 +638,12 @@ h1,h2,h3,p{margin-top:6px;margin-bottom:6px}
 
         <div class="preview-wrap" id="previewWrap">
           <div class="preview-container">
-            <div>
-              <h4 style="text-align:center;margin:0 0 10px;">Before</h4>
+            <div class="preview-card">
+              <h4>Before</h4>
               <div class="preview-img-frame"><img id="previewImgBefore" alt="Original photo"></div>
             </div>
-            <div>
-              <h4 style="text-align:center;margin:0 0 10px;">After</h4>
+            <div class="preview-card">
+              <h4>After</h4>
               <div class="preview-img-frame"><img id="previewImg" alt="Processed preview"></div>
             </div>
           </div>
@@ -724,13 +732,15 @@ let originalFileName = "photo";
 
 function showAfterView(){
   previewImg.style.display = 'block';
-  previewImgBefore.style.display = 'none';
-
+  previewImgBefore.style.display = 'block';
+  previewImg.style.opacity = '1';
+  previewImgBefore.style.opacity = '1';
 }
 function showBeforeView(){
-  previewImg.style.display = 'none';
+  previewImg.style.display = 'block';
   previewImgBefore.style.display = 'block';
-
+  previewImg.style.opacity = '1';
+  previewImgBefore.style.opacity = '1';
 }
 if(btnAfter&&btnBefore){btnAfter.addEventListener('click', showAfterView);btnBefore.addEventListener('click', showBeforeView);}
 
@@ -1170,5 +1180,3 @@ loadInitialStats();
 
 </body>
 </html>
-
-<style>.receipt-head{padding:12px 16px 8px}.receipt-rows{padding:8px 16px}.r-row{padding:5px 0}.receipt-foot{padding:10px 16px}.empty-receipt{padding:20px}.preview-img-frame{width:180px}</style>
